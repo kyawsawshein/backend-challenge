@@ -1,0 +1,10 @@
+db:
+  host: localhost
+  port: 27017
+  user: root
+  pwd: admin
+  name: mdb
+
+api:
+  port: 8000
+  jwtSecret: 123
