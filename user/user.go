@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"backend-challenge/auth"
 	"backend-challenge/db"
 
 	"github.com/gofiber/fiber/v2"
@@ -71,6 +72,12 @@ func register(c *fiber.Ctx) error {
 }
 
 func listUsers(c *fiber.Ctx) error {
+	user_id, err := auth.ValidateJwt(c)
+	if err != nil  {
+		return c.Status(422).JSON(fiber.Map{"Unauthal": err})
+	}
+	// TODO user role
+	fmt.Println("User Id : ", user_id)
 	ctx := c.Context()
 	cursor, err := GetUserCollection().Find(ctx, bson.M{})
 	if err != nil {
@@ -92,6 +99,12 @@ func listUsers(c *fiber.Ctx) error {
 
 func getUser(c *fiber.Ctx) error {
 	ctx := c.Context()
+	user_id, err := auth.ValidateJwt(c)
+	if err != nil  {
+		return c.Status(422).JSON(fiber.Map{"Unauthal": err})
+	}
+	// TODO user role
+	fmt.Println("User Id : ", user_id)
 	userID, err := primitive.ObjectIDFromHex(c.Params("id"))
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid user ID", "detail": err})
@@ -114,6 +127,12 @@ func getUser(c *fiber.Ctx) error {
 
 func updateUser(c *fiber.Ctx) error {
 	ctx := c.Context()
+	user_id, err := auth.ValidateJwt(c)
+	if err != nil  {
+		return c.Status(422).JSON(fiber.Map{"Unauthal": err})
+	}
+	// TODO user role
+	fmt.Println("User Id : ", user_id)
 	userID, err := primitive.ObjectIDFromHex(c.Params("id"))
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid user ID"})
@@ -143,6 +162,12 @@ func updateUser(c *fiber.Ctx) error {
 
 func deleteUser(c *fiber.Ctx) error {
 	ctx := c.Context()
+	user_id, err := auth.ValidateJwt(c)
+	if err != nil  {
+		return c.Status(422).JSON(fiber.Map{"Unauthal": err})
+	}
+	// TODO user role
+	fmt.Println("User Id : ", user_id)
 	userId, err := primitive.ObjectIDFromHex(c.Params("id"))
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid user ID", "detail": err})

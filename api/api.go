@@ -51,17 +51,6 @@ func jwtAuth(config *config.ApiConfig) fiber.Handler {
 	})
 }
 
-func ValidateJwt(c *fiber.Ctx) (string, error) {
-	userToken := c.Locals("token").(*jwt.Token)
-	if userToken != nil {
-		claims := userToken.Claims.(jwt.MapClaims)
-			tokenUserId := claims["user_id"].(string)
-			return tokenUserId, nil
-		}
-	return "", c.Status(500).JSON(fiber.Map{"error": "Token expiry or empty"})
-}
-
-
 func GetWebApi(Ctx context.Context) *Api {
 	apiOnce.Do(func() {api = createFiberApp(Ctx)})
 	return api
